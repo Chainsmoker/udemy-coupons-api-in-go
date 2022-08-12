@@ -2,6 +2,7 @@ package main
 
 import (
 	"strings"
+	"os"
 	"encoding/json"
 	"github.com/gocolly/colly"
 	"github.com/gofiber/fiber/v2"
@@ -13,7 +14,11 @@ func main(){
 	courses_udemy := []string{}
 	app := fiber.New()
 	domains := []string{"www.cursosdev.com/","www.cursosdev.com","cursosdev.com","cursosdev.com/"}
-	
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
 	ctx := colly.NewCollector(
 		colly.AllowedDomains(
 			domains...,
@@ -49,5 +54,5 @@ func main(){
 		return c.SendString(string(response))
     })
 
-    app.Listen(":3000")
+    app.Listen(":" + port)
 }
